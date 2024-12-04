@@ -1,0 +1,33 @@
+{
+  "name": "ddd/core",
+  "description": "ddd core sample",
+  "type": "project",
+  "license": "MIT",
+
+  "autoload": {
+    "psr-4": {
+      "ddd\\core\\": "src/"
+    }
+  },
+
+  "autoload-dev": {
+    "psr-4": {
+      "ddd\\core\\tests\\": "tests/"
+    }
+  },
+
+  "require": {
+    "php": "^8.2"
+  },
+
+  "require-dev": {
+    "fakerphp/faker": "^1.24",
+    "phpunit/phpunit": "^10.5",
+    "mockery/mockery": "^1.6"
+  },
+
+  "scripts": {
+    "test": "./vendor/bin/phpunit tests"
+  }
+
+}
