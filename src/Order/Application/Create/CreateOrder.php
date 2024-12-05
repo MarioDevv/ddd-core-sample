@@ -4,6 +4,7 @@ namespace ddd\core\Order\Application\Create;
 
 use ddd\core\Order\Domain\Contracts\OrderRepository;
 use ddd\core\Order\Domain\Order;
+use ddd\core\Order\Domain\OrderStatus;
 
 class CreateOrder
 {
@@ -19,7 +20,8 @@ class CreateOrder
 
         $order = new Order(
             $this->repository->nextOrderIdentity(),
-            $request->clientId()
+            $request->clientId(),
+            new OrderStatus(OrderStatus::PENDING),
         );
 
         foreach ($request->orderLines() as $line) {

@@ -13,9 +13,9 @@ class OrderLineMother
     {
         return new OrderLine(
             Number::random(),
-            Word::random(),
-            Number::random(),
-            Number::random()
+            OrderLineNameMother::random(),
+            OrderLineQuantityMother::random(),
+            OrderLinePriceMother::random(),
         );
     }
 
