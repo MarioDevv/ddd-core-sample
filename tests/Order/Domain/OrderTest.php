@@ -19,9 +19,9 @@ class OrderTest extends TestCase
 
         $order->addLine(
             $line->id(),
-            $line->name(),
-            $line->quantity(),
-            $line->price()
+            $line->name()->value(),
+            $line->quantity()->value(),
+            $line->price()->value()
         );
 
         $this->assertEquals($line, $order->lines()[$line->id()]);
@@ -44,9 +44,9 @@ class OrderTest extends TestCase
             30.00
         );
 
-        $this->assertEquals('Updated Name', $order->lines()[$lineId]->name());
-        $this->assertEquals(2, $order->lines()[$lineId]->quantity());
-        $this->assertEquals(30.00, $order->lines()[$lineId]->price());
+        $this->assertEquals('Updated Name', $order->lines()[$lineId]->name()->value());
+        $this->assertEquals(2, $order->lines()[$lineId]->quantity()->value());
+        $this->assertEquals(30.00, $order->lines()[$lineId]->price()->value());
     }
 
 
@@ -60,10 +60,19 @@ class OrderTest extends TestCase
         $expected = 0;
 
         foreach ($order->lines() as $line) {
-            $expected += $line->quantity() * $line->price();
+            $expected += $line->quantity()->value() * $line->price()->value();
         }
 
         $this->assertEquals($expected, $order->total());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_error_when_status_not_valid()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        OrderMother::random(status: 10);
     }
 
 }

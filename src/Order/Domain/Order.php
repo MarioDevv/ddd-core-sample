@@ -9,9 +9,10 @@ class Order
      * @param OrderLine[] $orderLines
      */
     public function __construct(
-        private readonly int $id,
-        private readonly int $clientId,
-        private array        $orderLines = [],
+        private readonly int         $id,
+        private readonly int         $clientId,
+        private readonly OrderStatus $status,
+        private array                $orderLines = [],
     )
     {
     }
@@ -26,6 +27,12 @@ class Order
         return $this->clientId;
     }
 
+    public function status(): OrderStatus
+    {
+        return $this->status;
+    }
+
+
     /**
      * @return OrderLine[]
      */
@@ -36,7 +43,12 @@ class Order
 
     public function addLine(int $id, string $name, int $quantity, float $price): void
     {
-        $this->orderLines[$id] = new OrderLine($id, $name, $quantity, $price);
+        $this->orderLines[$id] = new OrderLine(
+            $id,
+            new OrderLineName($name),
+            new OrderLineQuantity($quantity),
+            new OrderLinePrice($price),
+        );
     }
 
     public function changeLine(int $id, string $name, int $quantity, float $price): void
@@ -65,11 +77,12 @@ class Order
         return $total;
     }
 
-    public function equals(Order $order): bool
+    public function equals(Order $other): bool
     {
-        return $this->id === $order->id()
-            && $this->clientId === $order->clientId()
-            && $this->orderLinesAreEqual($order->lines());
+        return $this->id === $other->id()
+            && $this->clientId === $other->clientId()
+            && $this->status->equals($other->status())
+            && $this->orderLinesAreEqual($other->lines());
     }
 
     private function orderLinesAreEqual(array $lines): bool

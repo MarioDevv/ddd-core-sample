@@ -4,6 +4,7 @@ namespace ddd\core\tests\Order\Domain;
 
 use ddd\core\Order\Application\Create\CreateOrderRequest;
 use ddd\core\Order\Domain\Order;
+use ddd\core\Order\Domain\OrderStatus;
 use ddd\core\tests\Common\Domain\Number;
 
 class OrderMother
@@ -12,12 +13,14 @@ class OrderMother
     public static function random(
         ?int $id = null,
         ?int $customerId = null,
+        ?int $status = null,
         ?array $lines = null
     ): Order
     {
         return new Order(
             Number::random($id),
             Number::random($customerId),
+            OrderStatusMother::random($status),
             $lines ?? self::randomLines()
         );
     }
@@ -28,6 +31,7 @@ class OrderMother
         $order = new Order(
             Number::random(),
             $request->clientId(),
+            new OrderStatus(OrderStatus::PENDING),
         );
 
         foreach ($request->orderLines() as $line) {
