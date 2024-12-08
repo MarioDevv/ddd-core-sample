@@ -9,6 +9,6 @@ class OrderLineQuantityMother
 {
     public static function random(?int $value = null): OrderLineQuantity
     {
-        return new OrderLineQuantity($value ?? Number::numberBetween(1));
+        return new OrderLineQuantity($value ?? Number::numberBetween(1, 10));
     }
 }

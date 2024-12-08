@@ -23,9 +23,9 @@ class CreateOrderRequestMother
 
         for ($i = 0; $i < rand(1, 5); $i++) {
             $lines[] = [
-                'name' => Word::random(),
-                'quantity' => Number::random(),
-                'price' => Number::random()
+                'name'     => Word::random(),
+                'quantity' => Number::numberBetween(1, 3),
+                'price'    => Number::numberBetween(500, 2000)
             ];
         }
 

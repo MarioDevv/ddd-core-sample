@@ -74,7 +74,7 @@ class Order
             $total += $line->total();
         }
 
-        return $total;
+        return $total / 100;
     }
 
     public function equals(Order $other): bool
@@ -82,16 +82,22 @@ class Order
         return $this->id === $other->id()
             && $this->clientId === $other->clientId()
             && $this->status->equals($other->status())
-            && $this->orderLinesAreEqual($other->lines());
+            && $this->hasSameLines($other->lines());
     }
 
-    private function orderLinesAreEqual(array $lines): bool
+    private function hasSameLines(array $lines): bool
     {
-        return count($this->orderLines) === count($lines)
-            && array_reduce(
-                array_keys($this->orderLines),
-                fn($carry, $id) => $carry && $this->orderLines[$id]->equals($lines[$id]),
-                true
-            );
+        if (count($this->orderLines)!== count($lines)) {
+            return false;
+        }
+
+        foreach ($this->orderLines as $id => $line) {
+            if (!$line->equals($lines[$id])) {
+                return false;
+            }
+        }
+
+        return true;
     }
+
 }

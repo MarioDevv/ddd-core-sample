@@ -41,12 +41,12 @@ class OrderTest extends TestCase
             $lineId,
             'Updated Name',
             2,
-            30.00
+            500
         );
 
         $this->assertEquals('Updated Name', $order->lines()[$lineId]->name()->value());
         $this->assertEquals(2, $order->lines()[$lineId]->quantity()->value());
-        $this->assertEquals(30.00, $order->lines()[$lineId]->price()->value());
+        $this->assertEquals(500, $order->lines()[$lineId]->price()->value());
     }
 
 
@@ -63,6 +63,8 @@ class OrderTest extends TestCase
             $expected += $line->quantity()->value() * $line->price()->value();
         }
 
+        $expected = $expected / 100;
+
         $this->assertEquals($expected, $order->total());
     }
 
@@ -73,6 +75,26 @@ class OrderTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         OrderMother::random(status: 10);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_error_when_line_price_is_lower_than_minimum()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $order = OrderMother::random();
+
+        $line = OrderLineMother::random(price: 100);
+
+        $order->addLine(
+            $line->id(),
+            $line->name()->value(),
+            $line->quantity()->value(),
+            $line->price()->value()
+        );
+
     }
 
 }

@@ -50,7 +50,7 @@ class OrderLine
     }
 
 
-    public function total(): float
+    public function total(): int
     {
         return $this->quantity->value() * $this->price->value();
     }

@@ -10,6 +10,7 @@ class OrderLinePriceMother
 
     public static function random(?float $value = null): OrderLinePrice
     {
-        return new OrderLinePrice($value ?? Number::numberBetween(1));
+        return new OrderLinePrice($value ?? Number::numberBetween(500, 2000));
     }
+
 }

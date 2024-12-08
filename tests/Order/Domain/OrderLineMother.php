@@ -9,13 +9,17 @@ use ddd\core\tests\Common\Domain\Word;
 class OrderLineMother
 {
 
-    public static function random(): OrderLine
+    public static function random(
+        ?string $name  = null,
+        ?int $quantity = null,
+        ?int $price  = null
+    ): OrderLine
     {
         return new OrderLine(
             Number::random(),
-            OrderLineNameMother::random(),
-            OrderLineQuantityMother::random(),
-            OrderLinePriceMother::random(),
+            OrderLineNameMother::random($name),
+            OrderLineQuantityMother::random($quantity),
+            OrderLinePriceMother::random($price),
         );
     }
 
