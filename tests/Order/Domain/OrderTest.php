@@ -15,10 +15,11 @@ class OrderTest extends TestCase
 
         $order = OrderMother::random();
 
-        $line = OrderLineMother::random();
+        $line = OrderLineMother::random(orderId: $order->id());
 
         $order->addLine(
             $line->id(),
+            $order->id(),
             $line->name()->value(),
             $line->quantity()->value(),
             $line->price()->value()

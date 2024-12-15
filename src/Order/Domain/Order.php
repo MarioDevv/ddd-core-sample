@@ -41,10 +41,11 @@ class Order
         return $this->orderLines;
     }
 
-    public function addLine(int $id, string $name, int $quantity, float $price): void
+    public function addLine(int $id, int $orderId, string $name, int $quantity, float $price): void
     {
         $this->orderLines[$id] = new OrderLine(
             $id,
+            $orderId,
             new OrderLineName($name),
             new OrderLineQuantity($quantity),
             new OrderLinePrice($price),

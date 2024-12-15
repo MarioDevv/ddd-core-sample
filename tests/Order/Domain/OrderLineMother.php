@@ -10,6 +10,7 @@ class OrderLineMother
 {
 
     public static function random(
+        ?int $orderId = null,
         ?string $name  = null,
         ?int $quantity = null,
         ?int $price  = null
@@ -17,6 +18,7 @@ class OrderLineMother
     {
         return new OrderLine(
             Number::random(),
+            Number::random($orderId),
             OrderLineNameMother::random($name),
             OrderLineQuantityMother::random($quantity),
             OrderLinePriceMother::random($price),
