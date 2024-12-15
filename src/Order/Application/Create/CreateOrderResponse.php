@@ -31,7 +31,7 @@ class CreateOrderResponse
             'id' => $line->id(),
             'name' => $line->name()->value(),
             'quantity' => $line->quantity()->value(),
-            'total' => $line->total()
+            'price' => $line->price()->value(),
         ];
     }
 
