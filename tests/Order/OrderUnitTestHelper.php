@@ -35,7 +35,7 @@ class OrderUnitTestHelper extends PhpUnitTestCase
     protected function persist(Order $order): void
     {
         $this->repository()
-            ->shouldReceive('persist')
+            ->shouldReceive('save')
             ->with($this->equalTo($order))
             ->andReturn();
     }

@@ -33,7 +33,7 @@ class CreateOrder
             );
         }
 
-        $this->repository->persist($order);
+        $this->repository->save($order);
 
         return new CreateOrderResponse($order);
     }

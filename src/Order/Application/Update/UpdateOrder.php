@@ -34,7 +34,7 @@ class UpdateOrder
             );
         }
 
-        $this->repository->persist($order);
+        $this->repository->save($order);
     }
 
 
