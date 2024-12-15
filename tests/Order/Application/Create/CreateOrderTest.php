@@ -30,7 +30,7 @@ class CreateOrderTest extends OrderUnitTestHelper
 
         $this->nextOrderIdentity($order->id());
 
-        $lineIds = array_keys($order->lines());
+        $lineIds = array_keys($order->lines()->toArray());
 
         foreach ($lineIds as $lineId) {
             $this->nextOrderLineIdentity($lineId);

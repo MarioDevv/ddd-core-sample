@@ -61,6 +61,17 @@ class OrderLine
         return $this->quantity->value() * $this->price->value();
     }
 
+    public static function create(int $id, int $orderId, string $name, int $quantity, float $price): OrderLine
+    {
+        return new OrderLine(
+            $id,
+            $orderId,
+            new OrderLineName($name),
+            new OrderLineQuantity($quantity),
+            new OrderLinePrice($price)
+        );
+    }
+
     public function equals(OrderLine $other): bool
     {
         return $this->id === $other->id()

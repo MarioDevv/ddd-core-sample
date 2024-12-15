@@ -19,12 +19,25 @@ class OrderMother
     {
         $orderId = $id ?? Number::random();
 
-        return new Order(
+        $order = new Order(
             $orderId,
             Number::random($customerId),
             OrderStatusMother::random($status),
-            $lines ?? self::randomLines($orderId)
         );
+
+        $lines = $lines ?? self::randomLines($orderId);
+
+        foreach ($lines as $line) {
+            $order->addLine(
+                $line->id(),
+                $order->id(),
+                $line->name()->value(),
+                $line->quantity()->value(),
+                $line->price()->value(),
+            );
+        }
+
+        return $order;
     }
 
     public static function fromCreateRequest(CreateOrderRequest $request): Order
