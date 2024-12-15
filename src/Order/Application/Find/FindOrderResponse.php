@@ -28,9 +28,8 @@ class FindOrderResponse
     {
         return [
             'id' => $line->id(),
-            'name' => $line->name(),
-            'quantity' => $line->quantity(),
-            'price' => $line->price(),
+            'name' => $line->name()->value(),
+            'quantity' => $line->quantity()->value(),
             'total' => $line->total()
         ];
     }
