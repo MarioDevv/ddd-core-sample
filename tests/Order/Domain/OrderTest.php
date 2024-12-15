@@ -36,7 +36,7 @@ class OrderTest extends TestCase
 
         $order = OrderMother::random();
 
-        $lineId = key($order->lines());
+        $lineId = $order->lines()->first()->id();
 
         $order->changeLine(
             $lineId,

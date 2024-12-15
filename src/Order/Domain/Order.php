@@ -2,19 +2,30 @@
 
 namespace ddd\core\Order\Domain;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
 class Order
 {
 
+    private int $id;
+    private int $clientId;
+    private OrderStatus $status;
+
     /**
-     * @param OrderLine[] $orderLines
+     * @var Collection<int, OrderLine>
      */
+    private Collection $orderLines;
+
     public function __construct(
-        private readonly int         $id,
-        private readonly int         $clientId,
-        private readonly OrderStatus $status,
-        private array                $orderLines = [],
-    )
-    {
+        int $id,
+        int $clientId,
+        OrderStatus $status
+    ) {
+        $this->id = $id;
+        $this->clientId = $clientId;
+        $this->status = $status;
+        $this->orderLines = new ArrayCollection();
     }
 
     public function id(): int
@@ -34,37 +45,39 @@ class Order
 
 
     /**
-     * @return OrderLine[]
+     * @return Collection<int, OrderLine>
      */
-    public function lines(): array
+    public function lines(): Collection
     {
         return $this->orderLines;
     }
 
     public function addLine(int $id, int $orderId, string $name, int $quantity, float $price): void
     {
-        $this->orderLines[$id] = new OrderLine(
-            $id,
-            $orderId,
-            new OrderLineName($name),
-            new OrderLineQuantity($quantity),
-            new OrderLinePrice($price),
-        );
+
+        if ($this->orderLines->exists(fn($key) => $key === $id)) {
+            return;
+        }
+
+        $this->orderLines->set($id, OrderLine::create($id, $orderId, $name, $quantity, $price));
+
     }
 
     public function changeLine(int $id, string $name, int $quantity, float $price): void
     {
-        if (!isset($this->orderLines[$id])) {
+
+        $line = $this->orderLines->get($id);
+
+
+        if ($line === null) {
             return;
         }
-
-        $line = $this->orderLines[$id];
 
         $line->changeName($name);
         $line->changeQuantity($quantity);
         $line->changePrice($price);
 
-        $this->orderLines[$id] = $line;
+        $this->orderLines->set($id, $line);
     }
 
     public function total(): float
@@ -86,14 +99,14 @@ class Order
             && $this->hasSameLines($other->lines());
     }
 
-    private function hasSameLines(array $lines): bool
+    private function hasSameLines(Collection $lines): bool
     {
-        if (count($this->orderLines)!== count($lines)) {
+        if (count($this->orderLines) !== count($lines)) {
             return false;
         }
 
         foreach ($this->orderLines as $id => $line) {
-            if (!$line->equals($lines[$id])) {
+            if (!$line->equals($lines->get($id))) {
                 return false;
             }
         }
