@@ -7,7 +7,6 @@ class OrderLine
 
     public function __construct(
         private readonly int      $id,
-        private readonly int      $orderId,
         private OrderLineName     $name,
         private OrderLineQuantity $quantity,
         private OrderLinePrice    $price
@@ -18,11 +17,6 @@ class OrderLine
     public function id(): int
     {
         return $this->id;
-    }
-
-    public function orderId(): int
-    {
-        return $this->orderId;
     }
 
     public function name(): OrderLineName
@@ -61,11 +55,10 @@ class OrderLine
         return $this->quantity->value() * $this->price->value();
     }
 
-    public static function create(int $id, int $orderId, string $name, int $quantity, float $price): OrderLine
+    public static function create(int $id, string $name, int $quantity, float $price): OrderLine
     {
         return new OrderLine(
             $id,
-            $orderId,
             new OrderLineName($name),
             new OrderLineQuantity($quantity),
             new OrderLinePrice($price)

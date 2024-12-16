@@ -30,7 +30,6 @@ class OrderMother
         foreach ($lines as $line) {
             $order->addLine(
                 $line->id(),
-                $order->id(),
                 $line->name()->value(),
                 $line->quantity()->value(),
                 $line->price()->value(),
@@ -52,7 +51,6 @@ class OrderMother
         foreach ($request->orderLines() as $line) {
             $order->addLine(
                 Number::random(),
-                $order->id(),
                 $line['name'],
                 $line['quantity'],
                 $line['price'],

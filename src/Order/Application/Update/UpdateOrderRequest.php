@@ -5,8 +5,8 @@ namespace ddd\core\Order\Application\Update;
 class UpdateOrderRequest
 {
     public function __construct(
-        private int $orderId,
-        private int $clientId,
+        private int   $orderId,
+        private int   $clientId,
         private array $orderLines,
     )
     {

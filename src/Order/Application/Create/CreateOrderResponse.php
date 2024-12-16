@@ -15,23 +15,10 @@ class CreateOrderResponse
     {
     }
 
-    public function json()
+    public function json(): array
     {
         return [
-            'id' => $this->order->id(),
-            'clientId' => $this->order->clientId(),
-            'total' => $this->order->total(),
-            'lines' => array_map(fn (OrderLine $line) => $this->lineToJson($line), $this->order->lines())
-        ];
-    }
-
-    private function lineToJson(OrderLine $line): array
-    {
-        return [
-            'id' => $line->id(),
-            'name' => $line->name()->value(),
-            'quantity' => $line->quantity()->value(),
-            'price' => $line->price()->value(),
+            'id' => $this->order->id()
         ];
     }
 
