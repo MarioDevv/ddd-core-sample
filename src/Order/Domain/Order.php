@@ -18,13 +18,14 @@ class Order
     private Collection $orderLines;
 
     public function __construct(
-        int $id,
-        int $clientId,
+        int         $id,
+        int         $clientId,
         OrderStatus $status
-    ) {
-        $this->id = $id;
-        $this->clientId = $clientId;
-        $this->status = $status;
+    )
+    {
+        $this->id         = $id;
+        $this->clientId   = $clientId;
+        $this->status     = $status;
         $this->orderLines = new ArrayCollection();
     }
 
@@ -52,14 +53,14 @@ class Order
         return $this->orderLines;
     }
 
-    public function addLine(int $id, int $orderId, string $name, int $quantity, float $price): void
+    public function addLine(int $id, string $name, int $quantity, float $price): void
     {
 
         if ($this->orderLines->exists(fn($key) => $key === $id)) {
             return;
         }
 
-        $this->orderLines->set($id, OrderLine::create($id, $orderId, $name, $quantity, $price));
+        $this->orderLines->set($id, OrderLine::create($id, $name, $quantity, $price));
 
     }
 
