@@ -27,10 +27,10 @@ class UpdateOrder
 
         foreach ($request->orderLines() as $lineData) {
             $order->changeLine(
-                $lineData['id'],
                 $lineData['name'],
                 $lineData['quantity'],
-                $lineData['price']
+                $lineData['price'],
+                $lineData['position']
             );
         }
 

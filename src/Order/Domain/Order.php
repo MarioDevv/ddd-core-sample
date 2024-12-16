@@ -13,7 +13,7 @@ class Order
     private OrderStatus $status;
 
     /**
-     * @var Collection<int, OrderLine>
+     * @var Collection<OrderLine>
      */
     private Collection $orderLines;
 
@@ -45,40 +45,29 @@ class Order
     }
 
 
-    /**
-     * @return Collection<int, OrderLine>
-     */
     public function lines(): Collection
     {
         return $this->orderLines;
     }
 
-    public function addLine(int $id, string $name, int $quantity, float $price): void
+    public function addLine(string $name, int $quantity, float $price): void
     {
+        $nextPosition = $this->orderLines->count() + 1;
 
-        if ($this->orderLines->exists(fn($key) => $key === $id)) {
-            return;
-        }
-
-        $this->orderLines->set($id, OrderLine::create($id, $name, $quantity, $price));
-
+        $this->orderLines->add(OrderLine::create($name, $quantity, $price, $nextPosition));
     }
 
-    public function changeLine(int $id, string $name, int $quantity, float $price): void
+    public function changeLine(string $name, int $quantity, float $price, int $position): void
     {
+        $line = $this->orderLines->filter(fn(OrderLine $line) => $line->position()->value() === $position)->first();
 
-        $line = $this->orderLines->get($id);
-
-
-        if ($line === null) {
-            return;
+        if ($line === false) {
+            throw new \InvalidArgumentException("Line with position $position not found");
         }
 
         $line->changeName($name);
         $line->changeQuantity($quantity);
         $line->changePrice($price);
-
-        $this->orderLines->set($id, $line);
     }
 
     public function total(): float
@@ -106,8 +95,9 @@ class Order
             return false;
         }
 
-        foreach ($this->orderLines as $id => $line) {
-            if (!$line->equals($lines->get($id))) {
+        foreach ($this->orderLines as $line) {
+            $matchingLine = $lines->filter(fn(OrderLine $otherLine) => $line->equals($otherLine))->first();
+            if ($matchingLine === false) {
                 return false;
             }
         }

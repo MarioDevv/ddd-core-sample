@@ -11,25 +11,23 @@ class OrderMother
 {
 
     public static function random(
-        ?int $id = null,
-        ?int $customerId = null,
-        ?int $status = null,
+        ?int   $id = null,
+        ?int   $customerId = null,
+        ?int   $status = null,
         ?array $lines = null
     ): Order
     {
-        $orderId = $id ?? Number::random();
 
         $order = new Order(
-            $orderId,
+            Number::random($id),
             Number::random($customerId),
             OrderStatusMother::random($status),
         );
 
-        $lines = $lines ?? self::randomLines($orderId);
+        $lines = $lines ?? self::randomLines();
 
         foreach ($lines as $line) {
             $order->addLine(
-                $line->id(),
                 $line->name()->value(),
                 $line->quantity()->value(),
                 $line->price()->value(),
@@ -50,7 +48,6 @@ class OrderMother
 
         foreach ($request->orderLines() as $line) {
             $order->addLine(
-                Number::random(),
                 $line['name'],
                 $line['quantity'],
                 $line['price'],
@@ -61,13 +58,13 @@ class OrderMother
 
     }
 
-    private static function randomLines(int $orderId): array
+    private static function randomLines(): array
     {
         $lines = [];
 
         for ($i = 0; $i < 3; $i++) {
-            $line = OrderLineMother::random($orderId);
-            $lines[$line->id()] = $line;
+            $line    = OrderLineMother::random(position: $i + 1);
+            $lines[] = $line;
         }
 
         return $lines;
