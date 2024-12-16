@@ -27,7 +27,6 @@ class FindOrderResponse
     private function lineToJson(OrderLine $line): array
     {
         return [
-            'id'       => $line->id(),
             'name'     => $line->name()->value(),
             'quantity' => $line->quantity()->value(),
             'price'    => $line->price()->value(),
