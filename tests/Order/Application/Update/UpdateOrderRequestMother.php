@@ -27,7 +27,8 @@ class UpdateOrderRequestMother
                 'id'       => Number::random(),
                 'name'     => Word::random(),
                 'quantity' => Number::numberBetween(1, 3),
-                'price'    => Number::numberBetween(500, 2000)
+                'price'    => Number::numberBetween(500, 2000),
+                'position' => $i + 1
             ];
         }
 

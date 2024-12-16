@@ -26,7 +26,6 @@ class CreateOrder
 
         foreach ($request->orderLines() as $line) {
             $order->addLine(
-                $this->repository->nextOrderLineIdentity(),
                 $line['name'],
                 $line['quantity'],
                 $line['price'],

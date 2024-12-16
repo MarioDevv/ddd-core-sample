@@ -3,6 +3,7 @@
 namespace ddd\core\tests\Order\Application\Update;
 
 use ddd\core\Order\Application\Update\UpdateOrder;
+use ddd\core\tests\Order\Domain\OrderLineMother;
 use ddd\core\tests\Order\Domain\OrderMother;
 use ddd\core\tests\Order\OrderUnitTestHelper;
 use Exception;
@@ -24,7 +25,18 @@ class UpdateOrderTest extends OrderUnitTestHelper
     public function it_should_update_an_order()
     {
         $request = UpdateOrderRequestMother::random();
-        $order = OrderMother::random(id: $request->orderId());
+
+        $lines = [];
+
+        foreach ($request->orderLines() as $line) {
+            $lines[] = OrderLineMother::random(
+                $line['name'],
+                $line['quantity'],
+                $line['price'],
+            );
+        }
+
+        $order = OrderMother::random(id: $request->orderId(), lines: $lines);
 
         $this->findById($order->id(), $order);
 
@@ -47,8 +59,6 @@ class UpdateOrderTest extends OrderUnitTestHelper
 
         ($this->updateOrder)($request);
     }
-
-
 
 
 }

@@ -11,13 +11,13 @@ class CreateOrderTest extends OrderUnitTestHelper
 {
 
     private CreateOrder|null $createOrder = null;
-    
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->createOrder = new CreateOrder($this->repository());
     }
-    
+
     /**
      * @test
      */
@@ -29,12 +29,6 @@ class CreateOrderTest extends OrderUnitTestHelper
         $order = OrderMother::fromCreateRequest($request);
 
         $this->nextOrderIdentity($order->id());
-
-        $lineIds = array_keys($order->lines()->toArray());
-
-        foreach ($lineIds as $lineId) {
-            $this->nextOrderLineIdentity($lineId);
-        }
 
         $this->persist($order);
 
