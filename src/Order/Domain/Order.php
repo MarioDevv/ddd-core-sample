@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ddd\core\Order\Domain;
 
@@ -15,7 +16,7 @@ class Order
     /**
      * @var Collection<OrderLine>
      */
-    private Collection $orderLines;
+    private Collection $lines;
 
     public function __construct(
         int         $id,
@@ -23,10 +24,10 @@ class Order
         OrderStatus $status
     )
     {
-        $this->id         = $id;
-        $this->clientId   = $clientId;
-        $this->status     = $status;
-        $this->orderLines = new ArrayCollection();
+        $this->id       = $id;
+        $this->clientId = $clientId;
+        $this->status   = $status;
+        $this->lines    = new ArrayCollection();
     }
 
     public function id(): int
@@ -45,36 +46,26 @@ class Order
     }
 
 
-    public function lines(): Collection
+    public function lines(): array
     {
-        return $this->orderLines;
+        return $this->lines->toArray();
     }
 
     public function addLine(string $name, int $quantity, float $price): void
     {
-        $nextPosition = $this->orderLines->count() + 1;
-
-        $this->orderLines->add(OrderLine::create($name, $quantity, $price, $nextPosition));
+        $this->lines->add(OrderLine::create($name, $quantity, $price));
     }
 
-    public function changeLine(string $name, int $quantity, float $price, int $position): void
+    public function clearLines(): void
     {
-        $line = $this->orderLines->filter(fn(OrderLine $line) => $line->position()->value() === $position)->first();
-
-        if ($line === false) {
-            throw new \InvalidArgumentException("Line with position $position not found");
-        }
-
-        $line->changeName($name);
-        $line->changeQuantity($quantity);
-        $line->changePrice($price);
+        $this->lines->clear();
     }
 
     public function total(): float
     {
         $total = 0;
 
-        foreach ($this->orderLines as $line) {
+        foreach ($this->lines as $line) {
             $total += $line->total();
         }
 
@@ -89,20 +80,30 @@ class Order
             && $this->hasSameLines($other->lines());
     }
 
-    private function hasSameLines(Collection $lines): bool
+    private function hasSameLines(array $lines): bool
     {
-        if (count($this->orderLines) !== count($lines)) {
+        if (count($this->lines) !== count($lines)) {
             return false;
         }
 
-        foreach ($this->orderLines as $line) {
-            $matchingLine = $lines->filter(fn(OrderLine $otherLine) => $line->equals($otherLine))->first();
-            if ($matchingLine === false) {
+        foreach ($this->lines as $line) {
+            if (!$this->hasLine($line, $lines)) {
                 return false;
             }
         }
 
         return true;
+    }
+
+    private function hasLine(OrderLine $line, array $lines): bool
+    {
+        foreach ($lines as $otherLine) {
+            if ($line->equals($otherLine)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

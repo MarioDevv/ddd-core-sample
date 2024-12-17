@@ -25,13 +25,11 @@ class UpdateOrder
             throw new Exception($request->orderId());
         }
 
-        foreach ($request->orderLines() as $lineData) {
-            $order->changeLine(
-                $lineData['name'],
-                $lineData['quantity'],
-                $lineData['price'],
-                $lineData['position']
-            );
+        // Eliminamos todas las líneas de pedido para volver a crearlas
+        $order->clearLines();
+
+        foreach ($request->orderLines() as $line) {
+            $order->addLine($line['name'], $line['quantity'], $line['price']);
         }
 
         $this->repository->save($order);

@@ -17,42 +17,18 @@ class OrderTest extends TestCase
 
         $line = OrderLineMother::random();
 
+        $count = count($order->lines());
+
         $order->addLine(
             $line->name()->value(),
             $line->quantity()->value(),
             $line->price()->value()
         );
 
-        $addedLine = $order->lines()->last();
-
-        $this->assertEquals($line->name()->value(), $addedLine->name()->value());
-        $this->assertEquals($line->quantity()->value(), $addedLine->quantity()->value());
-        $this->assertEquals($line->price()->value(), $addedLine->price()->value());
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_update_a_line()
-    {
-
-        $order = OrderMother::random();
-
-        $randomPosition = $order->lines()->first()->position()->value();
-
-        $order->changeLine(
-            'Updated Name',
-            2,
-            500,
-            $randomPosition
-        );
-
-        $updatedLine = $order->lines()->filter(fn($orderLine) => $orderLine->position()->value() === $randomPosition)->first();
-
-        $this->assertEquals('Updated Name', $updatedLine->name()->value());
-        $this->assertEquals(2, $updatedLine->quantity()->value());
-        $this->assertEquals(500, $updatedLine->price()->value());
-
+        $this->assertCount($count + 1, $order->lines());
+        $this->assertEquals($line->name()->value(), $order->lines()[$count]->name()->value());
+        $this->assertEquals($line->quantity()->value(), $order->lines()[$count]->quantity()->value());
+        $this->assertEquals($line->price()->value(), $order->lines()[$count]->price()->value());
     }
 
 

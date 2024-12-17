@@ -63,7 +63,7 @@ class OrderMother
         $lines = [];
 
         for ($i = 0; $i < 3; $i++) {
-            $line    = OrderLineMother::random(position: $i + 1);
+            $line    = OrderLineMother::random();
             $lines[] = $line;
         }
 
