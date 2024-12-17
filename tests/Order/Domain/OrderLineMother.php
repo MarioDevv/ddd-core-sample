@@ -13,14 +13,12 @@ class OrderLineMother
         ?string $name = null,
         ?int    $quantity = null,
         ?int    $price = null,
-        ?int    $position = null
     ): OrderLine
     {
         return new OrderLine(
             OrderLineNameMother::random($name),
             OrderLineQuantityMother::random($quantity),
-            OrderLinePriceMother::random($price),
-            OrderLinePositionMother::random($position),
+            OrderLinePriceMother::random($price)
         );
     }
 

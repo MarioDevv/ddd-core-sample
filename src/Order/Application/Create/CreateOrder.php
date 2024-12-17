@@ -25,11 +25,7 @@ class CreateOrder
         );
 
         foreach ($request->orderLines() as $line) {
-            $order->addLine(
-                $line['name'],
-                $line['quantity'],
-                $line['price'],
-            );
+            $order->addLine($line['name'], $line['quantity'], $line['price']);
         }
 
         $this->repository->save($order);
