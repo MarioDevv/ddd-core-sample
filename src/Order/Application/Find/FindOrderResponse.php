@@ -20,7 +20,7 @@ class FindOrderResponse
             'id'       => $this->order->id(),
             'clientId' => $this->order->clientId(),
             'total'    => $this->order->total(),
-            'lines'    => array_map(fn(OrderLine $line) => $this->lineToJson($line), $this->order->lines()->toArray())
+            'lines'    => array_map(fn(OrderLine $line) => $this->lineToJson($line), $this->order->lines())
         ];
     }
 

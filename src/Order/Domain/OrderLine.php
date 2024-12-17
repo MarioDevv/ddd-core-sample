@@ -36,7 +36,7 @@ class OrderLine
         return $this->quantity->value() * $this->price->value();
     }
 
-    public static function create(string $name, int $quantity, float $price): OrderLine
+    public static function create(string $name, int $quantity, int $price): OrderLine
     {
         return new OrderLine(
             new OrderLineName($name),

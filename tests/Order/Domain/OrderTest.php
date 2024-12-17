@@ -71,7 +71,6 @@ class OrderTest extends TestCase
         $line = OrderLineMother::random(price: 100);
 
         $order->addLine(
-            $line->id(),
             $line->name()->value(),
             $line->quantity()->value(),
             $line->price()->value()

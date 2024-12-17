@@ -51,7 +51,7 @@ class Order
         return $this->lines->toArray();
     }
 
-    public function addLine(string $name, int $quantity, float $price): void
+    public function addLine(string $name, int $quantity, int $price): void
     {
         $this->lines->add(OrderLine::create($name, $quantity, $price));
     }

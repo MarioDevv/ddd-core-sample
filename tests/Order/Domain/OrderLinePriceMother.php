@@ -8,7 +8,7 @@ use ddd\core\tests\Common\Domain\Number;
 class OrderLinePriceMother
 {
 
-    public static function random(?float $value = null): OrderLinePrice
+    public static function random(?int $value = null): OrderLinePrice
     {
         return new OrderLinePrice($value ?? Number::numberBetween(500, 2000));
     }
